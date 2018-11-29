@@ -8,7 +8,7 @@ class DB
 	private static $dbport = 5432; // port du serveur
 	private static $dbuname = "postgres"; // login
 	private static $dbpass = "changeme"; // mot de passe
-	private static $dbname = "club_athle"; // nom de la base de données
+	private static $dbname = "simple-club"; // nom de la base de données
 	////////////////////////////////////////////////////////////////////////////
 	public static function get()
 	{
@@ -37,5 +37,4 @@ class DB
 //while($data = $r->fetch()) {
 //echo $data['id_licence'];
 //}
-
 ?>
