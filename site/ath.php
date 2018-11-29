@@ -38,7 +38,7 @@ $request = DB::get()->query('select * from ath');
 <?php
 // On récupère les données. Chaque ligne est sockée dans le tableau data.
 while($data = $request->fetch()) {
-	var_dump($data);
+	//var_dump($data);
 	?>
 	<tr>
 		<td><?php echo	$data['id_licence']; ?></td> <!-- 'code' est une colonne de la BDD. -->
@@ -73,5 +73,7 @@ $request->closeCursor(); // ne pas oublier de fermer le curseur.
 </form>
 </body>
 </body>
-
+<form method="post" action="cat.php">
+		<tr><td></td><td><input type="submit" value="See cathegorie" /></tr></br>
+</form>
 </html>
