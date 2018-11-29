@@ -1,10 +1,10 @@
 <?php
 include ('../config.php');
 
-function getCourses() {
+function getAth() {
 	$req = DB::get()->query('select * from ath');
-	$courses = $req->fetchAll();
-	return $courses;
+	$ath = $req->fetchAll();
+	return $ath;
 }	
 
 <?

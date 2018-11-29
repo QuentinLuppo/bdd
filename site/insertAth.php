@@ -1,10 +1,9 @@
 <?php
-session_start() ;
+//session_start() ;
 error_reporting(E_ALL);
 
 include ('config.php');
 $req = DB::get()->prepare("insert into ATH (id_licence, nom, prenom) values (:id_licence, :nom, :prenom)");
-
 // Utilisation d'un try... catch pour captuer et gérer proprement les erreurs potentielles.
 try {
 	$req->execute(array(
@@ -13,11 +12,9 @@ try {
 		'prenom' => $_POST['prenom']
 		));
 		// redirection
-		header('location: ./ath.php');
 } catch(PDOException $erreur) {
 echo "Erreur ".$erreur->getMessage();
 }
-
+header('location: ./ath.php');
 ?>
-</html>
 

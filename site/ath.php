@@ -8,7 +8,7 @@ error_reporting(E_ALL);
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" >
    <head>
-       <title>Cours disponibles</title>
+       <title>Athletes</title>
        <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
        <link rel="stylesheet" media="screen" type="text/css" title="style_tab" href="css/default.css" />
    </head>
@@ -35,9 +35,9 @@ $request = DB::get()->query('select * from ath');
 while($data = $request->fetch()) {
 	?>
 	<tr>
-		<td><?php echo	$data['Id_licence']; ?></td> <!-- 'code' est une colonne de la BDD. -->
-		<td><?php echo	$data['Nom']; ?></td>
-		<td><?php echo	$data['Prenom']; ?></td>
+		<td><?php echo	$data['id_licence']; ?></td> <!-- 'code' est une colonne de la BDD. -->
+		<td><?php echo	$data['nom']; ?></td>
+		<td><?php echo	$data['prenom']; ?></td>
 	</tr>
 	<?php
 }
@@ -47,11 +47,11 @@ $request->closeCursor(); // ne pas oublier de fermer le curseur.
 </table>
 
 <!-- Toutes les données du formulaire seront envoyées à la page 'insertCourse.php' avec la méthode POST. -->
-<form method="post" action="insertCourse.php">
-	<table><caption>Ajout d'un cours</caption>
-		<tr><td>Id_licence : </td><td><input type="text" name="Id_licence" /></td></tr> </br>
-		<tr><td>Nom : </td><td><input type="text" name="Nom" /></td></tr></br>
-		<tr><td>Prenom : </td><td><textarea name="Prenom" rows="5" cols="40"></textarea></tr></br> 
+<form method="post" action="insertAth.php">
+	<table><caption>Ajout d'un athlète</caption>
+		<tr><td>Id_licence : </td><td><input type="text" name="id_licence" /></td></tr> </br>
+		<tr><td>Nom : </td><td><input type="text" name="nom" /></td></tr></br>
+		<tr><td>Prenom : </td><td><textarea name="prenom" rows="5" cols="40"></textarea></tr></br> 
 		<tr><td></td><td><input type="submit" value="Valider" /></tr></br>
 	</table>
 </form>

@@ -33,10 +33,9 @@ class DB
 }
 // le code ci-dessous sert à tester la connexion.
 
-$r = DB::get()->query('select * from ath;');
-while($data = $r->fetch()) {
-echo $data['Id_licence'];
-}
+//$r = DB::get()->query('select * from ath;');
+//while($data = $r->fetch()) {
+//echo $data['id_licence'];
+//}
 
 ?>
-

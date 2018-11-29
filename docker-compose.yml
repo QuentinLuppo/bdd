@@ -14,13 +14,13 @@ services:
         image: postgres:9
         volumes:
             - ./docker/postgres/logs:/var/log/postgresql
-            - ./simple-course.sql:/docker-entrypoint-initdb.d/simple-course.sql
+            - ./simple-club.sql:/docker-entrypoint-initdb.d/simple-club.sql
         ports:
             - 5432:5432
         environment:
             - POSTGRES_PASSWORD=changeme
             - POSTGRES_USER=postgres
-            - POSTGRES_DB=simple-course
+            - POSTGRES_DB=simple-club
 
             
     phppgadmin:
