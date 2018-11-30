@@ -12,6 +12,14 @@
 -- Initialize the structure.
 -----------------------------------------------------------------------------
 CREATE OR REPLACE PROCEDURAL LANGUAGE plpgsql;
+
+CREATE TABLE CATHEGORIE (
+id_cat SMALLINT NOT NULL,
+cat VARCHAR(10) NOT NULL,
+cout INTEGER NOT NULL,
+PRIMARY KEY (id_cat)
+);
+
 CREATE TABLE ATH (
 id_licence INTEGER NOT NULL,
 nom VARCHAR(10) NOT NULL,
@@ -21,16 +29,16 @@ adhesion DATE,
 mail VARCHAR(100),
 num_tel VARCHAR(100),
 fin_validite DATE,
+id_cat SMALLINT REFERENCES CATHEGORIE(id_cat),
 PRIMARY KEY (id_licence)
 );
 
-CREATE TABLE CATHEGORIE (
-id_cat VARCHAR(10) NOT NULL,
-cat VARCHAR(10) NOT NULL,
+CREATE TABLE BUDGET (
+id_budget INTEGER NOT NULL,
 cout INTEGER NOT NULL,
-PRIMARY KEY (id_cat)
+budget INTEGER NOT NULL,
+année DATE 
 );
-
 
 -----------------------------------------------------------------------------
 -- Defining roles.
@@ -51,12 +59,12 @@ CREATE ROLE "justine.clavier" LOGIN IN GROUP responsable;
 -----------------------------------------------------------------------------
 -- Insert some data.
 -----------------------------------------------------------------------------
-INSERT INTO ATH VALUES ('12740', 'Jean', 'Dupont','1996/05/25','2000/02/05','toto@gmail.com','0669696969','2019/06/01');
-INSERT INTO ATH VALUES ('12820', 'Kevin', 'Durant','1996/05/25','2000/03/05','titi@gmail.com','0669696969','2019/06/01');
-
 INSERT INTO CATHEGORIE VALUES('1', 'bejamin','50');
 INSERT INTO CATHEGORIE VALUES('2', 'minime', '60');
 INSERT INTO CATHEGORIE VALUES('3', 'cadet', '100');
+
+INSERT INTO ATH VALUES ('12740', 'Jean', 'Dupont','1996/05/25','2000/02/05','toto@gmail.com','0669696969','2019/06/01','1');
+INSERT INTO ATH VALUES ('12820', 'Kevin', 'Durant','1996/05/25','2000/03/05','titi@gmail.com','0669696969','2019/06/01','2');
 
 -----------------------------------------------------------------------------
 -- Views & Functions.
@@ -64,12 +72,11 @@ INSERT INTO CATHEGORIE VALUES('3', 'cadet', '100');
 CREATE VIEW ATH_Atribute AS
 	SELECT ATH.Id_licence AS ATH_id, ATH.Nom as ATH_Nom, ATH.Prenom AS ATH_prenom, ATH.date_naissance AS ATH_naissance, ATH.adhesion AS ATH_adhesion, ATH.mail AS ATH_mail, ATH.num_tel AS ATH_num, ATH.fin_validite AS ATH_validite
 	FROM ATH
-END;
 
-CREATE VIEW CAT_atribute AS
+CREATE VIEW CAT_Atribute AS
 	SELECT CATHEGORIE.id_cat AS cat_id, CATHEGORIE.cat AS cat, CATHEGORIE.cout AS cat_cout
 	FROM CATHEGORIE
-END;
+
 
 CREATE OR REPLACE FUNCTION curr_roles() RETURNS SETOF TEXT
     LANGUAGE plpgsql AS $$

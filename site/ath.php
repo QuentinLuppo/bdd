@@ -68,12 +68,22 @@ $request->closeCursor(); // ne pas oublier de fermer le curseur.
 		<tr><td>mail : </td><td><input type="text" name="mail" /></td></tr></br>
 		<tr><td>num tel : </td><td><input type="text" name="num_tel" /></td></tr></br>
 		<tr><td>fin de validite : </td><td><input type="text" name="fin_validite" /></td></tr></br>
-		<tr><td></td><td><input type="submit" value="Valider" /></tr></br>
+		<tr><td>cat_id : </td><td><input type="text" name="id_cat" /></td></tr></br>
+		<tr><td>tout doit etre remplie</td><td><input type="submit" value="Valider" /></tr></br>
 	</table>
 </form>
 </body>
 </body>
 <form method="post" action="cat.php">
-		<tr><td></td><td><input type="submit" value="See cathegorie" /></tr></br>
+	<table><caption>Pour voir autre table + fonction </caption>
+		<tr><td>Go on all categorie</td><td><input type="submit" value="See cathegorie" /></tr></br>
+	</table>
 </form>
+<form method="post" action="getcat.php">
+	<table><caption>Pour voir autre table + fonction </caption>
+	<tr><td>Id_licence : </td><td><input type="text" name="id_licence" /></td></tr> </br>
+	<tr><td>Go on categorie of this num licence</td><td><input type="submit" value="See cathegorie" /></tr></br>
+	</table>
+</form>
+
 </html>
