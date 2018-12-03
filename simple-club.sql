@@ -13,7 +13,7 @@
 -----------------------------------------------------------------------------
 CREATE OR REPLACE PROCEDURAL LANGUAGE plpgsql;
 
-CREATE TABLE CATHEGORIE (
+CREATE TABLE CATEGORIE (
 id_cat SMALLINT NOT NULL,
 cat VARCHAR(10) NOT NULL,
 cout INTEGER NOT NULL,
@@ -29,15 +29,15 @@ adhesion DATE,
 mail VARCHAR(100),
 num_tel VARCHAR(100),
 fin_validite DATE,
-id_cat SMALLINT REFERENCES CATHEGORIE(id_cat),
+id_cat SMALLINT REFERENCES CATEGORIE(id_cat),
 PRIMARY KEY (id_licence)
 );
 
 CREATE TABLE BUDGET (
-id_budget INTEGER NOT NULL,
 cout INTEGER NOT NULL,
 budget INTEGER NOT NULL,
-année DATE 
+annee INTEGER,
+PRIMARY key (annee)
 );
 
 -----------------------------------------------------------------------------
@@ -59,24 +59,45 @@ CREATE ROLE "justine.clavier" LOGIN IN GROUP responsable;
 -----------------------------------------------------------------------------
 -- Insert some data.
 -----------------------------------------------------------------------------
-INSERT INTO CATHEGORIE VALUES('1', 'bejamin','50');
-INSERT INTO CATHEGORIE VALUES('2', 'minime', '60');
-INSERT INTO CATHEGORIE VALUES('3', 'cadet', '100');
+INSERT INTO CATEGORIE VALUES('1', 'bejamin','50');
+INSERT INTO CATEGORIE VALUES('2', 'minime', '60');
+INSERT INTO CATEGORIE VALUES('3', 'cadet', '100');
 
-INSERT INTO ATH VALUES ('12740', 'Jean', 'Dupont','1996/05/25','2000/02/05','toto@gmail.com','0669696969','2019/06/01','1');
-INSERT INTO ATH VALUES ('12820', 'Kevin', 'Durant','1996/05/25','2000/03/05','titi@gmail.com','0669696969','2019/06/01','2');
+
 
 -----------------------------------------------------------------------------
 -- Views & Functions.
 -------------------------------------------------------
-CREATE VIEW ATH_Atribute AS
-	SELECT ATH.Id_licence AS ATH_id, ATH.Nom as ATH_Nom, ATH.Prenom AS ATH_prenom, ATH.date_naissance AS ATH_naissance, ATH.adhesion AS ATH_adhesion, ATH.mail AS ATH_mail, ATH.num_tel AS ATH_num, ATH.fin_validite AS ATH_validite
-	FROM ATH
 
-CREATE VIEW CAT_Atribute AS
-	SELECT CATHEGORIE.id_cat AS cat_id, CATHEGORIE.cat AS cat, CATHEGORIE.cout AS cat_cout
-	FROM CATHEGORIE
+CREATE OR REPLACE FUNCTION calcul_budget_ath() 
+    RETURNS TRIGGER
+    LANGUAGE plpgsql AS $$
+DECLARE 
+    sum_licence INTEGER := '0';
+    calcul INTEGER; 
+    ath_id_cat INTEGER;
+BEGIN
+    FOR calcul,ath_id_cat IN SELECT DISTINCT count(ath.id_cat),ath.id_cat AS count_id FROM ath GROUP BY ath.id_cat 
+    LOOP
+        sum_licence = sum_licence + calcul * (SELECT cout FROM categorie where categorie.id_cat = ath_id_cat);
+    END LOOP;
+    IF EXISTS (SELECT * FROM BUDGET WHERE annee = (SELECT EXTRACT (YEAR FROM (SELECT CURRENT_TIMESTAMP)))) THEN
+        UPDATE BUDGET SET cout ='0',budget = sum_licence WHERE annee = (SELECT EXTRACT (YEAR FROM (SELECT CURRENT_TIMESTAMP)));
+    ELSE 
+        INSERT INTO BUDGET VALUES('0',(sum_licence),(SELECT EXTRACT (YEAR FROM (SELECT CURRENT_TIMESTAMP))));
+    END IF;
+    RETURN NULL;
+END;
+$$;
 
+CREATE TRIGGER new_calcul
+AFTER INSERT OR UPDATE
+ON ath 
+FOR EACH row
+EXECUTE PROCEDURE calcul_budget_ath();
+
+INSERT INTO ATH VALUES ('12740', 'Jean', 'Dupont','1996/05/25','2000/02/05','toto@gmail.com','0669696969','2019/06/01','1');
+INSERT INTO ATH VALUES ('12820', 'Kevin', 'Durant','1996/05/25','2000/03/05','titi@gmail.com','0669696969','2019/06/01','3');
 
 CREATE OR REPLACE FUNCTION curr_roles() RETURNS SETOF TEXT
     LANGUAGE plpgsql AS $$
@@ -89,22 +110,71 @@ BEGIN
 END;
 $$;
 
+/* 
+SELECT EXTRACT(YEAR FROM TIMESTAMP (SELECT NOW()));
+EXTRACT(YEAR FROM (SELECT CURRENT_TIMESTAMP));
+*/
+
+
+
 -----------------------------------------------------------------------------
 -- Permissions.
 -----------------------------------------------------------------------------
 GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE ATH TO trainer;
 GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE ATH TO athle;
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE ATH TO reponsable;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE ATH TO responsable;
 
-/*CREATE OR REPLACE FUNCTION ATH_Update()
+/*
+CREATE OR REPLACE FUNCTION budget_update()
 RETURNS TRIGGER
 LANGUAGE plpgsql
 AS $function$
    BEGIN
-      INSERT INTO ATH VALUES(NEW.COURSE_code,NEW.COURSE_name);
-      RETURN NEW;
+    IF TG_OP = 'INSERT' THEN
+        INSERT
+        RETURN NEW;
+    ELSIF TG_OP = 'UPDATE' THEN
+		UPDATE   
+        RETURN NEW;
+    ELSIF TG_OP = 'DELETE' THEN
+        DELETE
+        RETURN NULL;
+    END IF;
+    RETURN NEW;
     END;
 $function$;
 */
+/*CREATE TRIGGER COURSE_DETAILS_TRIGGER
+   INSTEAD OF INSERT OR UPDATE OR DELETE ON 
+      COURSE_DETAILS FOR EACH ROW EXECUTE PROCEDURE budget_update();
+*/
 
 -- Exercices : connectez-vous avec les trois utilisateurs et constater par vous-même les droits de chacun.
+
+/*SELECT ath.id_cat, count(ath.id_cat) FROM ath group by ath.id_cat 
+*/
+/*Begin
+        FOR count(ath.id_cat) IN SELECT DISTINCT ath.id_cat, count(ath.id_cat) FROM ath group by ath.id_cat LOOP
+            sum_licence = sum_licence + (count(ath.id_cat) * (SELECT cout FROM categorie where id_cat = ath.id_cat)
+        END LOOP;
+
+        
+CREATE FUNCTION fil_actu(id INTEGER) 
+  -- adjust the data types for the returned columns!
+  RETURNS table (id_photo int, id_user int, lien text, titre text, nom text, prenom text)
+AS $$
+  SELECT id_photo, photo.id_user, lien, titre, nom, prenom 
+  FROM photo 
+  INNER JOIN utilisateur ON photo.id_user = utilisateur.id_user
+  WHERE photo.id_user IN (SELECT id_userabo 
+                    FROM abo 
+                    WHERE id_user = 6 ) 
+  ORDER BY date_publi DESC 
+  LIMIT 10;
+$$
+LANGUAGE sql;
+
+
+
+
+    */

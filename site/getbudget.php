@@ -2,17 +2,8 @@
 //session_start() ;
 error_reporting(E_ALL);
 include ('config.php');
-$req = DB::get()->prepare("select * from categorie where id_cat = (SELECT id_cat FROM ATH where id_licence= (:id_licence))");
-// Utilisation d'un try... catch pour captuer et gérer proprement les erreurs potentielles.
-try {
-	$req->execute(array(
-		'id_licence' => $_POST['id_licence'],
-	));
-        // redirection
-    
-} catch(PDOException $erreur) {
-echo "Erreur ".$erreur->getMessage();
-}
+// On appelle la méthode statique get() de la classe DB qui renvoit une instance du PDO.
+$request = DB::get()->query('select * from BUDGET');
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -22,30 +13,32 @@ echo "Erreur ".$erreur->getMessage();
        <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
        <link rel="stylesheet" media="screen" type="text/css" title="style_tab" href="css/default.css" />
    </head>
+
 <body>
+
 <table>
-		<caption>Cathegorie de l'athlete</caption>
+		<caption>Liste des budgets</caption>
 		<thead>
 			<tr>
-				<th>Id_cat</th>
-				<th>cat</th>
 				<th>cout</th>
+				<th>budget</th>
+				<th>annee</th>
 			</tr>
 		</thead>
 	<tbody>
-    <?php
+<?php
 // On récupère les données. Chaque ligne est sockée dans le tableau data.
-while($data = $req->fetch()) {
+while($data = $request->fetch()) {
 	//var_dump($data);
 	?>
 	<tr>
-		<td><?php echo	$data['id_cat']; ?></td> <!-- 'code' est une colonne de la BDD. -->
-		<td><?php echo	$data['cat']; ?></td>
-		<td><?php echo	$data['cout']; ?></td>
+		<td><?php echo	$data['cout']; ?></td> <!-- 'code' est une colonne de la BDD. -->
+		<td><?php echo	$data['budget']; ?></td>
+		<td><?php echo	$data['annee']; ?></td>
 	</tr>
 	<?php
 }
-$req->closeCursor(); // ne pas oublier de fermer le curseur.
+$request->closeCursor(); // ne pas oublier de fermer le curseur.
 ?>
 </tbody>
 </table>

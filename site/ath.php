@@ -75,15 +75,22 @@ $request->closeCursor(); // ne pas oublier de fermer le curseur.
 </body>
 </body>
 <form method="post" action="cat.php">
-	<table><caption>Pour voir autre table + fonction </caption>
+	<table><caption>Permert de voir la table categorie </caption>
 		<tr><td>Go on all categorie</td><td><input type="submit" value="See cathegorie" /></tr></br>
 	</table>
 </form>
 <form method="post" action="getcat.php">
-	<table><caption>Pour voir autre table + fonction </caption>
+	<table><caption>Permet de voir la categorie d'une licence </caption>
 	<tr><td>Id_licence : </td><td><input type="text" name="id_licence" /></td></tr> </br>
 	<tr><td>Go on categorie of this num licence</td><td><input type="submit" value="See cathegorie" /></tr></br>
 	</table>
 </form>
+
+<form method="post" action="getbudget.php">
+	<table><caption>table Budget </caption>
+	<tr><td>Go on budget</td><td><input type="submit" value="See cathegorie" /></tr></br>
+	</table>
+</form>
+
 
 </html>
