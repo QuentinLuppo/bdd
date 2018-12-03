@@ -1,16 +1,4 @@
------------------	BDD - Illustrative examples	 	-----------------
------------ version 31 mars 2013, mise à jour le 09 février 2015 ----------------
 
------------------------------------------------------------------------------
--- Clear previous information.
------------------------------------------------------------------------------
-
-
-
-
------------------------------------------------------------------------------
--- Initialize the structure.
------------------------------------------------------------------------------
 CREATE OR REPLACE PROCEDURAL LANGUAGE plpgsql;
 
 CREATE TABLE CATEGORIE (
@@ -110,71 +98,9 @@ BEGIN
 END;
 $$;
 
-/* 
-SELECT EXTRACT(YEAR FROM TIMESTAMP (SELECT NOW()));
-EXTRACT(YEAR FROM (SELECT CURRENT_TIMESTAMP));
-*/
-
-
-
 -----------------------------------------------------------------------------
 -- Permissions.
 -----------------------------------------------------------------------------
 GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE ATH TO trainer;
 GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE ATH TO athle;
 GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE ATH TO responsable;
-
-/*
-CREATE OR REPLACE FUNCTION budget_update()
-RETURNS TRIGGER
-LANGUAGE plpgsql
-AS $function$
-   BEGIN
-    IF TG_OP = 'INSERT' THEN
-        INSERT
-        RETURN NEW;
-    ELSIF TG_OP = 'UPDATE' THEN
-		UPDATE   
-        RETURN NEW;
-    ELSIF TG_OP = 'DELETE' THEN
-        DELETE
-        RETURN NULL;
-    END IF;
-    RETURN NEW;
-    END;
-$function$;
-*/
-/*CREATE TRIGGER COURSE_DETAILS_TRIGGER
-   INSTEAD OF INSERT OR UPDATE OR DELETE ON 
-      COURSE_DETAILS FOR EACH ROW EXECUTE PROCEDURE budget_update();
-*/
-
--- Exercices : connectez-vous avec les trois utilisateurs et constater par vous-même les droits de chacun.
-
-/*SELECT ath.id_cat, count(ath.id_cat) FROM ath group by ath.id_cat 
-*/
-/*Begin
-        FOR count(ath.id_cat) IN SELECT DISTINCT ath.id_cat, count(ath.id_cat) FROM ath group by ath.id_cat LOOP
-            sum_licence = sum_licence + (count(ath.id_cat) * (SELECT cout FROM categorie where id_cat = ath.id_cat)
-        END LOOP;
-
-        
-CREATE FUNCTION fil_actu(id INTEGER) 
-  -- adjust the data types for the returned columns!
-  RETURNS table (id_photo int, id_user int, lien text, titre text, nom text, prenom text)
-AS $$
-  SELECT id_photo, photo.id_user, lien, titre, nom, prenom 
-  FROM photo 
-  INNER JOIN utilisateur ON photo.id_user = utilisateur.id_user
-  WHERE photo.id_user IN (SELECT id_userabo 
-                    FROM abo 
-                    WHERE id_user = 6 ) 
-  ORDER BY date_publi DESC 
-  LIMIT 10;
-$$
-LANGUAGE sql;
-
-
-
-
-    */
