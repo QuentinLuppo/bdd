@@ -22,6 +22,7 @@ $request = DB::get()->query('select * from BUDGET');
 			<tr>
 				<th>cout</th>
 				<th>budget</th>
+				<th>reste</th>
 				<th>annee</th>
 			</tr>
 		</thead>
@@ -33,7 +34,8 @@ while($data = $request->fetch()) {
 	?>
 	<tr>
 		<td><?php echo	$data['cout']; ?></td> <!-- 'code' est une colonne de la BDD. -->
-		<td><?php echo	$data['budget']; ?></td>
+		<td><?php echo	$data['budget_ath']; ?></td>
+		<td><?php echo	$data['budget_rest']; ?></td>
 		<td><?php echo	$data['annee']; ?></td>
 	</tr>
 	<?php
@@ -42,7 +44,7 @@ $request->closeCursor(); // ne pas oublier de fermer le curseur.
 ?>
 </tbody>
 </table>
-<form method="post" action="ath.php">
+<form method="post" action="menu.php">
 		<tr><td></td><td><input type="submit" value="return" /></tr></br>
 </form>
 </html>

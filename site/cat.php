@@ -42,7 +42,7 @@ $request->closeCursor(); // ne pas oublier de fermer le curseur.
 ?>
 </tbody>
 </table>
-<form method="post" action="ath.php">
+<form method="post" action="menu.php">
 		<tr><td></td><td><input type="submit" value="return" /></tr></br>
 </form>
 </html>
