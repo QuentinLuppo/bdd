@@ -34,4 +34,9 @@ error_reporting(E_ALL);
 	<tr><td>Go on budget</td><td><input type="submit" value="See budget" /></tr></br>
 	</table>
 </form>
+<form method="post" action="salle.php">
+	<table><caption>table salle </caption>
+	<tr><td>Go on Salle</td><td><input type="submit" value="See salle" /></tr></br>
+	</table>
+</form>
 </html>

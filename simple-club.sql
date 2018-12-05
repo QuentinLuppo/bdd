@@ -57,6 +57,8 @@ PRIMARY KEY (id_salle),
 id_entraineur INTEGER REFERENCES ENTRAINEUR(id_entraineur)
 );
 
+-- DANS LA TABLE SALLE L'entraineur id = 0 fera reference à une alle ou il n'y  a personne
+
 CREATE TABLE MATERIEL (
 id_materiel INTEGER NOT NULL,
 etat VARCHAR(10),
@@ -146,7 +148,6 @@ BEGIN
 END;
 $$;
 
-
 CREATE TRIGGER new_calcul_rest
 AFTER INSERT OR UPDATE
 ON ATH 
@@ -158,8 +159,9 @@ AFTER INSERT OR UPDATE
 ON ENTRAINEUR 
 FOR EACH row
 EXECUTE PROCEDURE calcul_cout_entraineur();
-
---------------------------------------------- INSERT ATH ENTRAINEUR ------------------------------------------------------
+-----------------------------------------------------------------------------
+-- Insert some data.
+-----------------------------------------------------------------------------
 
 INSERT INTO ATH VALUES('12740', 'Jean', 'Dupont','1996/05/25','2000/02/05','toto@gmail.com','0669696969','2019/06/01','1');
 INSERT INTO ATH VALUES('12821', 'Kevin', 'Durant','1996/05/25','2000/03/05','titi@gmail.com','0669696969','2019/06/01','3');
@@ -172,7 +174,13 @@ INSERT INTO ATH VALUES('12824', 'Kevin', 'Durant','1996/05/25','2000/03/05','tit
 
 INSERT INTO ENTRAINEUR VALUES('19751', 'LEMONS', 'Dupont','1996/05/25','2000/02/05','toto@gmail.com','0669696969');
 INSERT INTO ENTRAINEUR VALUES('15792', 'TOTO', 'Durant','1996/05/25','2000/03/05','titi@gmail.com','0669696969');
-INSERT INTO ENTRAINEUR VALUES('15712', 'TATA', 'Durant','1996/05/25','2000/03/05','titi@gmail.com','0669696969');
+
+INSERT INTO SALLE VALUES('1','rue du toto','19751');
+INSERT INTO SALLE VALUES('2','rue du toto','15792');
+INSERT INTO SALLE VALUES('3','rue du toto','19751');
+INSERT INTO SALLE VALUES('4','rue du toto',NULL);
+INSERT INTO SALLE VALUES('5','rue du toto',NULL);
+INSERT INTO SALLE VALUES('6','rue du toto',NULL);
 
 -----------------------------------------------------------------------------------------------------------------------------
 
